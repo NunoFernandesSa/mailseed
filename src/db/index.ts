@@ -1,11 +1,11 @@
-import migrations from "@/drizzle/migrations";
 import { drizzle } from "drizzle-orm/expo-sqlite";
-import * as SQLite from "expo-sqlite";
+import { openDatabaseSync } from "expo-sqlite";
 
+// --- DB Name ---
 const DB_NAME = process.env.EXPO_PUBLIC_DB_NAME ?? "mailseed.db";
 
-const expoDb = SQLite.openDatabaseSync(DB_NAME);
+// --- DB Instance ---
+const expoDb = openDatabaseSync(DB_NAME);
+const db = drizzle(expoDb);
 
-export const db = drizzle(expoDb);
-
-export { DB_NAME, expoDb, migrations };
+export { db };
