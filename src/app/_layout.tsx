@@ -5,6 +5,7 @@ import { Suspense, useEffect } from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { db } from "../db";
 import migrations from "../drizzle/migrations";
 
@@ -64,21 +65,27 @@ export default function RootLayout() {
   }
 
   return (
-    <Suspense
-      fallback={<ActivityIndicator animating={true} color="red" size="large" />}
-    >
-      <StatusBar style="dark" />
-      <Stack
-        screenOptions={{
-          headerShown: true,
-          title: "MailSeed",
-          headerRight: () => (
-            <TouchableOpacity onPress={() => {}}>
-              <Ionicons name="settings" size={24} />
-            </TouchableOpacity>
-          ),
-        }}
-      />
-    </Suspense>
+    <SafeAreaProvider>
+      <Suspense
+        fallback={
+          <ActivityIndicator animating={true} color="red" size="large" />
+        }
+      >
+        <StatusBar style="dark" />
+        <Stack
+          screenOptions={{
+            headerShown: true,
+            title: "MailSeed",
+            headerRight: () => (
+              <TouchableOpacity onPress={() => {}}>
+                <Ionicons name="settings" size={24} />
+              </TouchableOpacity>
+            ),
+          }}
+        >
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        </Stack>
+      </Suspense>
+    </SafeAreaProvider>
   );
 }
