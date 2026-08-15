@@ -1,6 +1,8 @@
+import { Ionicons } from "@expo/vector-icons";
 import { SplashScreen, Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { Suspense, useEffect } from "react";
-import { ActivityIndicator, Text, View } from "react-native";
+import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { db } from "../db";
@@ -12,14 +14,14 @@ import migrations from "../drizzle/migrations";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  // Le hook de Drizzle se charge de comparer le schéma actuel et d'appliquer les migrations manquantes
+  // compare the current schema with the expected schema and apply any missing migrations
   // @ts-expect-error
   const { success, error } = useMigrations(db, migrations);
 
   useEffect(() => {
     if (error) {
       console.error("Erreur critique de migration DB:", error);
-      // Même en cas d'erreur, on doit libérer l'UI pour afficher le message d'erreur fatal
+      // Even if there's an error, we must release the UI to show the fatal error message
       SplashScreen.hideAsync();
     } else if (success) {
       SplashScreen.hideAsync();
@@ -65,7 +67,18 @@ export default function RootLayout() {
     <Suspense
       fallback={<ActivityIndicator animating={true} color="red" size="large" />}
     >
-      <Stack />
+      <StatusBar style="dark" />
+      <Stack
+        screenOptions={{
+          headerShown: true,
+          title: "MailSeed",
+          headerRight: () => (
+            <TouchableOpacity onPress={() => {}}>
+              <Ionicons name="settings" size={24} />
+            </TouchableOpacity>
+          ),
+        }}
+      />
     </Suspense>
   );
 }
