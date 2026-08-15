@@ -1,15 +1,22 @@
 # Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
-# dependencies
+# ---------- dependencies ----------
 node_modules/
+/.pnp
+.pnp.js
+.yarn/install-state.gz
 
-# Expo
+# ---------- Expo & build outputs ----------
 .expo/
 dist/
 web-build/
 expo-env.d.ts
 
-# Native
+# Prebuild / generated native folders
+/ios
+/android
+
+# Native builds & signing
 .kotlin/
 *.orig.*
 *.jks
@@ -18,26 +25,41 @@ expo-env.d.ts
 *.key
 *.mobileprovision
 
-# Metro
+# Metro bundler
 .metro-health-check*
 
-# debug
+# ---------- Debug & logs ----------
 npm-debug.*
 yarn-debug.*
 yarn-error.*
+pnpm-debug*
+*.log
 
-# macOS
+# ---------- macOS / OS artifacts ----------
 .DS_Store
 *.pem
+Thumbs.db
 
-# local env files
+# ---------- Environment files ----------
+.env
 .env*.local
 
-# typescript
+# ---------- TypeScript ----------
 *.tsbuildinfo
 
-example
+# ---------- Testing / coverage ----------
+coverage/
+*.lcov
 
-# generated native folders
-/ios
-/android
+# ---------- Package manager locks (optional; choose ONE) ----------
+# Uncomment only if you actively use one of these alternates to npm:
+# yarn.lock
+# pnpm-lock.yaml
+
+# ---------- IDE / editor (keep shared configs!) ----------
+# .vscode/*                        # uncomment if you want personal-only vscode settings
+# !.vscode/extensions.json         # keep shared recommended extensions
+# !.vscode/settings.json           # keep shared workspace settings
+.idea/
+*.swp
+*.swo
