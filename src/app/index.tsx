@@ -1,72 +1,6 @@
-import { platformService } from "@/services/platformService";
-import { usePlatformStore } from "@/store/platformStore";
-import { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function Index() {
-  const items = usePlatformStore((s) => s.items);
-  const isLoading = usePlatformStore((s) => s.isLoading);
-  const setLoading = usePlatformStore((s) => s.setLoading);
-  const setError = usePlatformStore((s) => s.setError);
-  const error = usePlatformStore((s) => s.error);
-  const [status, setStatus] = useState<string>("Idle");
-
-  const refresh = async () => {
-    setLoading(true);
-    await platformService.loadAll();
-  };
-
-  const seedDemo = async () => {
-    setLoading(true);
-    setStatus("Seeding demo data…");
-    try {
-      await platformService.create({
-        name: "GitHub",
-        email: "dev@example.com",
-        url: "https://github.com",
-        notes: "Personal account",
-        tags: ["dev", "social"],
-        starred: true,
-      });
-      await platformService.create({
-        name: "Netflix",
-        email: "home@example.com",
-        url: "https://netflix.com",
-        tags: ["streaming"],
-      });
-      await platformService.create({
-        name: "Gmail",
-        email: "dev@example.com",
-        url: "https://mail.google.com",
-        notes: "Main email provider",
-        tags: ["email", "google"],
-        starred: true,
-      });
-      await refresh();
-      setStatus("✅ Seeded 3 demo platforms");
-    } catch (e: any) {
-      const msg = `Seed failed: ${e?.message ?? String(e)}`;
-      setError(msg);
-      setStatus(msg);
-    }
-  };
-
-  const clearAll = async () => {
-    setStatus("Clearing all rows…");
-    try {
-      for (const p of items) await platformService.remove(p.id);
-      setStatus("🧹 Cleared all platforms");
-    } catch (e: any) {
-      setStatus(`Clear failed: ${e?.message ?? String(e)}`);
-    }
-  };
-
-  const stats = platformService.stats();
-
-  useEffect(() => {
-    refresh();
-  }, []);
-
   return (
     <ScrollView
       style={styles.container}
@@ -76,45 +10,15 @@ export default function Index() {
       <Text style={styles.subtitle}>Local-first email-platform tracker</Text>
 
       <View style={styles.row}>
-        <Pressable style={styles.btn} onPress={seedDemo}>
+        <Pressable style={styles.btn} onPress={() => {}}>
           <Text style={styles.btnText}>🌱 Insert demo data</Text>
         </Pressable>
-        <Pressable style={[styles.btn, styles.btnGhost]} onPress={clearAll}>
+        <Pressable style={[styles.btn, styles.btnGhost]} onPress={() => {}}>
           <Text style={styles.btnTextGhost}>🧹 Clear all</Text>
         </Pressable>
       </View>
 
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>DB status</Text>
-        <Text>• Loading: {isLoading ? "true" : "false"}</Text>
-        <Text>• Total platforms: {stats.total}</Text>
-        <Text>• Starred: {stats.starred}</Text>
-        <Text>• Last status: {status}</Text>
-        {error ? <Text style={{ color: "red" }}>Error: {error}</Text> : null}
-      </View>
-
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>Platforms ({items.length})</Text>
-        {items.length === 0 ? (
-          <Text style={{ color: "#666" }}>
-            No rows yet — press "Insert demo data"
-          </Text>
-        ) : (
-          items.map((p) => (
-            <View key={p.id} style={styles.rowItem}>
-              <Text style={styles.rowTitle}>
-                {p.starred ? "⭐ " : ""}
-                {p.name}
-              </Text>
-              <Text style={styles.rowSub}>{p.email}</Text>
-              {p.url ? <Text style={styles.rowSub}>{p.url}</Text> : null}
-              {p.tags?.length ? (
-                <Text style={styles.rowSub}>🏷️ {p.tags.join(", ")}</Text>
-              ) : null}
-            </View>
-          ))
-        )}
-      </View>
+      <View style={styles.card}></View>
     </ScrollView>
   );
 }
@@ -148,13 +52,4 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 1,
   },
-  cardTitle: { fontWeight: "700", fontSize: 16, marginBottom: 4 },
-  rowItem: {
-    paddingVertical: 8,
-    borderTopWidth: 1,
-    borderTopColor: "#EEE",
-    gap: 2,
-  },
-  rowTitle: { fontWeight: "600", fontSize: 15, color: "#111" },
-  rowSub: { color: "#555", fontSize: 13 },
 });
