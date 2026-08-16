@@ -1,11 +1,11 @@
+import { ThemeProvider } from "@/context/theme/ThemeContext";
+import { useTheme } from "@/hooks/useTheme";
 import { Ionicons } from "@expo/vector-icons";
+import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Suspense, useEffect } from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
-
-import { ThemeProvider } from "@/context/theme/ThemeContext";
-import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { db } from "../db";
 import migrations from "../drizzle/migrations";
@@ -15,14 +15,71 @@ import migrations from "../drizzle/migrations";
  */
 SplashScreen.preventAutoHideAsync();
 
+/**
+ * Renders the main navigation stack of the application, including global header configuration
+ * and theme-aware UI elements for the entire app navigation tree.
+ * @returns JSX.Element containing the application's root navigation stack
+ */
+const MainStack = () => {
+  const { theme, mode, toggleTheme } = useTheme();
+
+  return (
+    <>
+      <StatusBar style={mode === "dark" ? "light" : "dark"} />
+      <View style={{ flex: 1, backgroundColor: theme.colors.bg.base }}>
+        <Stack
+          screenOptions={{
+            headerShown: true,
+            title: "MailSeed",
+            headerStyle: {
+              backgroundColor: theme.colors.bg.surface,
+            },
+            headerTitleStyle: {
+              color: theme.colors.text.primary,
+            },
+            headerTintColor: theme.colors.text.primary,
+            headerShadowVisible: false,
+            contentStyle: {
+              backgroundColor: "transparent",
+            },
+            headerRight: () => (
+              <TouchableOpacity
+                onPress={toggleTheme}
+                style={{ marginRight: 16 }}
+              >
+                <Ionicons
+                  name={mode === "dark" ? "sunny" : "moon"}
+                  size={24}
+                  color={theme.colors.text.primary}
+                />
+              </TouchableOpacity>
+            ),
+          }}
+        >
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        </Stack>
+      </View>
+    </>
+  );
+};
+
+/**
+ * Root layout component that initializes the application, handles database migrations,
+ * and provides the core providers and navigation structure for the entire app.
+ * Manages loading states, error handling for database initialization, and wraps
+ * the application in necessary context providers.
+ * @returns JSX.Element containing the fully initialized application or error/loading states
+ */
 export default function RootLayout() {
   // compare the current schema with the expected schema and apply any missing migrations
   // @ts-expect-error
   const { success, error } = useMigrations(db, migrations);
 
+  const theme = useTheme();
+
   useEffect(() => {
     if (error) {
-      console.error("Erreur critique de migration DB:", error);
+      console.error("Critical error in database migration:", error);
       // Even if there's an error, we must release the UI to show the fatal error message
       SplashScreen.hideAsync();
     } else if (success) {
@@ -33,29 +90,37 @@ export default function RootLayout() {
   // --- Fatal Error Handling ---
   if (error) {
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          padding: 20,
-        }}
-      >
-        <Text
+      <SafeAreaProvider>
+        <View
           style={{
-            fontSize: 18,
-            color: "red",
-            fontWeight: "bold",
-            marginBottom: 10,
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            padding: 20,
+            backgroundColor: theme.theme.colors.bg.base,
           }}
         >
-          Erreur de démarrage
-        </Text>
-        <Text style={{ textAlign: "center", color: "gray" }}>
-          Impossible d'initialiser la base de données locale. Veuillez relancer
-          l'application.
-        </Text>
-      </View>
+          <Text
+            style={{
+              fontSize: 18,
+              color: theme.theme.colors.accent.red,
+              fontWeight: "bold",
+              marginBottom: 10,
+            }}
+          >
+            Erreur de démarrage
+          </Text>
+          <Text
+            style={{
+              textAlign: "center",
+              color: theme.theme.colors.text.secondary,
+            }}
+          >
+            Impossible d'initialiser la base de données locale. Veuillez
+            relancer l'application.
+          </Text>
+        </View>
+      </SafeAreaProvider>
     );
   }
 
@@ -70,23 +135,23 @@ export default function RootLayout() {
       <ThemeProvider>
         <Suspense
           fallback={
-            <ActivityIndicator animating={true} color="red" size="large" />
+            <View
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: theme.theme.colors.bg.base,
+              }}
+            >
+              <ActivityIndicator
+                animating={true}
+                color={theme.theme.colors.accent.blue}
+                size="large"
+              />
+            </View>
           }
         >
-          <StatusBar style="dark" />
-          <Stack
-            screenOptions={{
-              headerShown: true,
-              title: "MailSeed",
-              headerRight: () => (
-                <TouchableOpacity onPress={() => {}}>
-                  <Ionicons name="settings" size={24} />
-                </TouchableOpacity>
-              ),
-            }}
-          >
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          </Stack>
+          <MainStack />
         </Suspense>
       </ThemeProvider>
     </SafeAreaProvider>

@@ -1,18 +1,10 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { HomeScreen } from "@/screens";
+import { JSX } from "react";
 
-export default function Index() {
-  return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={{ padding: 20, gap: 12 }}
-    >
-      <View>
-        <Text>index</Text>
-      </View>
-    </ScrollView>
-  );
+/**
+ * Home screen component
+ * @returns JSX.Element containing the home screen UI
+ */
+export default function HomeTabScreen(): JSX.Element {
+  return <HomeScreen />;
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-});
