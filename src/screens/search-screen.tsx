@@ -1,14 +1,12 @@
 import { ScreenContainer } from "@/components";
-import type { Platform } from "@/db/schema";
 import { useTheme } from "@/hooks/useTheme";
 import { useThemedStyles } from "@/hooks/useThemedStyles";
 import { useState } from "react";
-import { Text, TextInput, View } from "react-native";
+import { TextInput } from "react-native";
 
 const SearchScreen = () => {
   const { theme } = useTheme();
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<Platform[]>([]);
 
   const s = useThemedStyles((t) => ({
     title: {
@@ -51,10 +49,9 @@ const SearchScreen = () => {
 
   return (
     <ScreenContainer scrollable={false}>
-      <Text style={s.title}>🔍 Search</Text>
       <TextInput
         style={s.input}
-        placeholder="Name, email, URL, notes…"
+        placeholder="Search email or platform"
         placeholderTextColor={theme.colors.text.disabled}
         value={query}
         onChangeText={setQuery}
@@ -62,24 +59,6 @@ const SearchScreen = () => {
         autoCapitalize="none"
         keyboardAppearance={theme.mode}
       />
-      {query.trim().length > 0 && results.length === 0 ? (
-        <Text style={s.empty}>No results for "{query}"</Text>
-      ) : null}
-      {results.length > 0 ? (
-        <View style={s.card}>
-          <Text style={s.resultTitle}>{results.length} results</Text>
-          {results.map((p) => (
-            <View key={p.id} style={s.row}>
-              <Text style={s.resultTitle}>
-                {p.starred ? "⭐ " : ""}
-                {p.name}
-              </Text>
-              <Text style={s.resultSub}>{p.email}</Text>
-              {p.url ? <Text style={s.resultSub}>{p.url}</Text> : null}
-            </View>
-          ))}
-        </View>
-      ) : null}
     </ScreenContainer>
   );
 };

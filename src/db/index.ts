@@ -10,4 +10,4 @@ expoDb.execSync("PRAGMA foreign_keys = ON;");
 
 const db = drizzle(expoDb);
 
-export { db };
+export { db, DB_NAME, expoDb };

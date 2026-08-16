@@ -1,4 +1,4 @@
-import { ScreenContainer } from "@/components";
+import { Header, ScreenContainer } from "@/components";
 import { useTheme } from "@/hooks/useTheme";
 import { useThemedStyles } from "@/hooks/useThemedStyles";
 import { Text, View } from "react-native";
@@ -72,8 +72,8 @@ const SettingsScreen = () => {
   }));
 
   return (
-    <ScreenContainer scrollable>
-      <Text style={s.title}>⚙️ Settings</Text>
+    <ScreenContainer scrollable safeArea={false}>
+      <Header title="Settings" />
 
       <View style={s.rowGroup}>
         <Text style={s.groupTitle}>Appearance</Text>
