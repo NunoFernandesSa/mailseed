@@ -1,43 +1,19 @@
-import { db } from "@/db";
 import {
   type Email,
-  emails,
   type EmailWithPlatforms,
   type NewEmail,
   type NewPlatform,
   type Platform,
-  platforms,
   type PlatformWithEmail,
 } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { emailService, platformService } from "@/services";
+import { MailseedState } from "@/types/store-types";
 import { create } from "zustand";
 
-const q = db.query as any;
-
-/* ========================================================================
- *  STATE INTERFACE
- * ====================================================================== */
-interface MailseedState {
-  /* ---------- Data ---------- */
-  emails: Email[];
-  platforms: PlatformWithEmail[];
-
-  /* ---------- Loading / Error ---------- */
-  isLoading: boolean;
-  error: string | null;
-
-  /* ---------- Initializer ---------- */
-  fetchInitialData: () => Promise<void>;
-
-  /* ---------- Emails CRUD ---------- */
-  addEmail: (data: NewEmail) => Promise<Email | undefined>;
-  deleteEmail: (id: number) => Promise<void>;
-
-  /* ---------- Platforms CRUD ---------- */
-  addPlatform: (data: NewPlatform) => Promise<Platform | undefined>;
-  deletePlatform: (id: number) => Promise<void>;
-}
-
+/**
+ * Mailseed Store
+ * @description Manages the state of the Mailseed application.
+ */
 const useMailseedStore = create<MailseedState>((set, get) => ({
   /* ---------- Initial state ---------- */
   emails: [],
@@ -45,17 +21,16 @@ const useMailseedStore = create<MailseedState>((set, get) => ({
   isLoading: false,
   error: null,
 
-  /* ====================================================================
-   *  FETCH ALL
-   * ================================================================== */
+  /**
+   * @description Fetches the initial data for the store.
+   * @returns A promise that resolves when the data is fetched.
+   */
   fetchInitialData: async () => {
     set({ isLoading: true, error: null });
     try {
       const [fetchedEmails, fetchedPlatforms] = await Promise.all([
-        db.select().from(emails),
-        q.platforms.findMany({
-          with: { email: true },
-        }) as unknown as Promise<PlatformWithEmail[]>,
+        emailService.getAll(),
+        platformService.getAllWithEmail(),
       ]);
 
       set({
@@ -71,13 +46,14 @@ const useMailseedStore = create<MailseedState>((set, get) => ({
     }
   },
 
-  /* ====================================================================
-   *  EMAILS
-   * ================================================================== */
-  addEmail: async (data) => {
+  /**
+   * @description Adds a new email to the store.
+   * @param data - The email data to add.
+   * @returns A promise that resolves to the created email object.
+   */
+  addEmail: async (data: NewEmail) => {
     try {
-      const inserted = await db.insert(emails).values(data).returning().get();
-
+      const inserted = await emailService.create(data);
       await get().fetchInitialData();
       return inserted;
     } catch (e) {
@@ -88,9 +64,14 @@ const useMailseedStore = create<MailseedState>((set, get) => ({
     }
   },
 
-  deleteEmail: async (id) => {
+  /**
+   * @description Deletes an email by ID.
+   * @param id - The ID of the email to delete.
+   * @returns A promise that resolves when the operation is complete.
+   */
+  deleteEmail: async (id: number) => {
     try {
-      await db.delete(emails).where(eq(emails.id, id));
+      await emailService.delete(id);
       await get().fetchInitialData();
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
@@ -99,17 +80,14 @@ const useMailseedStore = create<MailseedState>((set, get) => ({
     }
   },
 
-  /* ====================================================================
-   *  PLATFORMS
-   * ================================================================== */
-  addPlatform: async (data) => {
+  /**
+   * @description Adds a new platform to the store.
+   * @param data - The platform data to add.
+   * @returns A promise that resolves to the created platform object.
+   */
+  addPlatform: async (data: NewPlatform) => {
     try {
-      const inserted = await db
-        .insert(platforms)
-        .values(data)
-        .returning()
-        .get();
-
+      const inserted = await platformService.create(data);
       await get().fetchInitialData();
       return inserted;
     } catch (e) {
@@ -120,9 +98,14 @@ const useMailseedStore = create<MailseedState>((set, get) => ({
     }
   },
 
-  deletePlatform: async (id) => {
+  /**
+   * @description Deletes a platform by ID.
+   * @param id - The ID of the platform to delete.
+   * @returns A promise that resolves when the operation is complete.
+   */
+  deletePlatform: async (id: number) => {
     try {
-      await db.delete(platforms).where(eq(platforms.id, id));
+      await platformService.delete(id);
       await get().fetchInitialData();
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
@@ -134,9 +117,7 @@ const useMailseedStore = create<MailseedState>((set, get) => ({
 
 export default useMailseedStore;
 
-/* ========================================================================
- *  TYPES UTILES POUR L'APP (ré-exporte depuis le store pour centraliser)
- * ================================================================== */
+// ----- re-export Types from the store -----
 export type {
   Email,
   EmailWithPlatforms,
