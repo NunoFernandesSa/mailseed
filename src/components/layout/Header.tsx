@@ -1,55 +1,56 @@
 import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { ReactNode } from "react";
 import { Text, View } from "react-native";
 
-const Header = () => {
+interface HeaderProps {
+  title: string;
+  subtitle?: string;
+  count?: number;
+  icon?: ReactNode;
+}
+
+export const Header = ({ title, subtitle, count, icon }: HeaderProps) => {
   const s = useThemedStyles((theme) => ({
+    card: {
+      ...theme.mixins.card,
+      gap: theme.spacing.xs,
+    },
+    titleRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: theme.spacing.sm,
+    },
+    iconContainer: {
+      justifyContent: "center",
+      alignItems: "center",
+      color: theme.colors.text.primary,
+    },
     title: {
       fontSize: theme.typography.size.xl,
       fontWeight: theme.typography.weight.bold,
       color: theme.colors.text.primary,
+      flexShrink: 1,
+    },
+    countBadge: {
+      fontSize: theme.typography.size.sm,
+      fontWeight: theme.typography.weight.semibold,
+      color: theme.colors.text.secondary,
     },
     subtitle: {
-      color: theme.colors.text.secondary,
       fontSize: theme.typography.size.sm,
-      marginBottom: theme.spacing.md,
-    },
-    card: { ...theme.mixins.card },
-    cardTitle: {
-      color: theme.colors.text.primary,
-      fontWeight: theme.typography.weight.semibold,
-    },
-    cardRow: {
-      paddingVertical: theme.spacing.sm,
-      borderTopWidth: 1,
-      borderTopColor: theme.colors.border.subtle,
-      gap: 2,
-    },
-    starred: {
-      color: theme.colors.text.primary,
-      fontWeight: theme.typography.weight.semibold,
-      fontSize: theme.typography.size.base,
-    },
-    normal: {
-      color: theme.colors.text.primary,
-      fontSize: theme.typography.size.base,
-    },
-    meta: {
       color: theme.colors.text.secondary,
-      fontSize: theme.typography.size.sm,
-    },
-    rowBadge: {
-      ...theme.mixins.badge(theme.colors.accent.blue),
-      alignSelf: "flex-start",
-      marginTop: theme.spacing.xs,
     },
   }));
 
   return (
     <View style={s.card}>
-      <Text style={s.title}>📬 Mailseed</Text>
-      <Text style={s.subtitle}>x platforms connected</Text>
+      <View style={s.titleRow}>
+        {icon && <View style={s.iconContainer}>{icon}</View>}
+        <Text style={s.title}>{title}</Text>
+        {count !== undefined && <Text style={s.countBadge}>({count})</Text>}
+      </View>
+
+      {subtitle && <Text style={s.subtitle}>{subtitle}</Text>}
     </View>
   );
 };
-
-export { Header };
