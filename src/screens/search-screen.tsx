@@ -2,8 +2,7 @@ import { ScreenContainer } from "@/components/shared";
 import type { Platform } from "@/db/schema";
 import { useTheme } from "@/hooks/useTheme";
 import { useThemedStyles } from "@/hooks/useThemedStyles";
-import { platformService } from "@/services/platformService";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Text, TextInput, View } from "react-native";
 
 const SearchScreen = () => {
@@ -50,21 +49,6 @@ const SearchScreen = () => {
     },
   }));
 
-  useEffect(() => {
-    let alive = true;
-    (async () => {
-      if (!query.trim()) {
-        setResults([]);
-        return;
-      }
-      const rows = await platformService.search(query.trim());
-      if (alive) setResults(rows);
-    })();
-    return () => {
-      alive = false;
-    };
-  }, [query]);
-
   return (
     <ScreenContainer scrollable={false}>
       <Text style={s.title}>🔍 Search</Text>
@@ -101,3 +85,4 @@ const SearchScreen = () => {
 };
 
 export { SearchScreen };
+

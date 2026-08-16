@@ -1,3 +1,5 @@
+import { MigrationErrorFallback } from "@/components";
+import { CenteredView, SuspenseFallback } from "@/components/shared";
 import { ThemeProvider } from "@/context/theme/ThemeContext";
 import { useTheme } from "@/hooks/useTheme";
 import { Ionicons } from "@expo/vector-icons";
@@ -5,22 +7,79 @@ import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Suspense, useEffect } from "react";
-import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { db } from "../db";
 import migrations from "../drizzle/migrations";
 
 /**
  * Prevents the Splash Screen from disappearing automatically
+ * (it is dismissed explicitly once migrations + theme are ready)
  */
 SplashScreen.preventAutoHideAsync();
 
 /**
- * Renders the main navigation stack of the application, including global header configuration
- * and theme-aware UI elements for the entire app navigation tree.
- * @returns JSX.Element containing the application's root navigation stack
+ * Entry point for Expo Router, responsible for setting up the theme context and rendering the app inner.
+ * @returns The fully initialized app UI or appropriate loading/error states
  */
-const MainStack = () => {
+export default function AppShell() {
+  return (
+    <SafeAreaProvider>
+      <ThemeProvider>
+        <Suspense fallback={<SuspenseFallback />}>
+          <AppInner />
+        </Suspense>
+      </ThemeProvider>
+    </SafeAreaProvider>
+  );
+}
+
+/**
+ * Internal app component that handles database migrations, theme initialization,
+ * and renders the main navigation stack once all prerequisites are met.
+ * @returns The fully initialized app UI or appropriate loading/error states
+ */
+function AppInner() {
+  const { theme } = useTheme();
+
+  // --- Database migrations ---
+  // @ts-expect-error - The `journal` field is not part of the migrations bundle.
+  const { success, error } = useMigrations(db, migrations);
+
+  // --- Dismiss SplashScreen when ready ---
+  useEffect(() => {
+    if (error) {
+      console.error("Critical error in database migration:", error);
+      SplashScreen.hideAsync();
+    } else if (success) {
+      SplashScreen.hideAsync();
+    }
+  }, [success, error]);
+
+  // --- Fatal error view ---
+  if (error) {
+    return (
+      <MigrationErrorFallback
+        message={error instanceof Error ? error.message : String(error)}
+      />
+    );
+  }
+
+  // As long as `success` is false, we keep the SplashScreen displayed → no need for a separate loader.
+  // We return a themed background as a precaution (in case the splash screen is hidden prematurely).
+  if (!success) {
+    return <CenteredView bgColor={theme.colors.bg.base} />;
+  }
+
+  // --- All set → render the navigation tree ---
+  return <MainStack />;
+}
+
+/**
+ * Renders the main navigation stack including global header configuration
+ * and theme-aware UI elements for the entire app navigation tree.
+ */
+function MainStack() {
   const { theme, mode, toggleTheme } = useTheme();
 
   return (
@@ -36,6 +95,9 @@ const MainStack = () => {
             },
             headerTitleStyle: {
               color: theme.colors.text.primary,
+              fontFamily: theme.typography.family,
+              fontSize: theme.typography.size.lg,
+              fontWeight: theme.typography.weight.bold,
             },
             headerTintColor: theme.colors.text.primary,
             headerShadowVisible: false,
@@ -45,10 +107,11 @@ const MainStack = () => {
             headerRight: () => (
               <TouchableOpacity
                 onPress={toggleTheme}
-                style={{ marginRight: 16 }}
+                style={{ marginRight: theme.spacing.md }}
+                hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
               >
                 <Ionicons
-                  name={mode === "dark" ? "sunny" : "moon"}
+                  name={mode === "dark" ? "sunny-outline" : "moon-outline"}
                   size={24}
                   color={theme.colors.text.primary}
                 />
@@ -60,100 +123,5 @@ const MainStack = () => {
         </Stack>
       </View>
     </>
-  );
-};
-
-/**
- * Root layout component that initializes the application, handles database migrations,
- * and provides the core providers and navigation structure for the entire app.
- * Manages loading states, error handling for database initialization, and wraps
- * the application in necessary context providers.
- * @returns JSX.Element containing the fully initialized application or error/loading states
- */
-export default function RootLayout() {
-  // compare the current schema with the expected schema and apply any missing migrations
-  // @ts-expect-error
-  const { success, error } = useMigrations(db, migrations);
-
-  const theme = useTheme();
-
-  useEffect(() => {
-    if (error) {
-      console.error("Critical error in database migration:", error);
-      // Even if there's an error, we must release the UI to show the fatal error message
-      SplashScreen.hideAsync();
-    } else if (success) {
-      SplashScreen.hideAsync();
-    }
-  }, [success, error]);
-
-  // --- Fatal Error Handling ---
-  if (error) {
-    return (
-      <SafeAreaProvider>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            padding: 20,
-            backgroundColor: theme.theme.colors.bg.base,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 18,
-              color: theme.theme.colors.accent.red,
-              fontWeight: "bold",
-              marginBottom: 10,
-            }}
-          >
-            Erreur de démarrage
-          </Text>
-          <Text
-            style={{
-              textAlign: "center",
-              color: theme.theme.colors.text.secondary,
-            }}
-          >
-            Impossible d'initialiser la base de données locale. Veuillez
-            relancer l'application.
-          </Text>
-        </View>
-      </SafeAreaProvider>
-    );
-  }
-
-  // --- Loading State Management ---
-  // As long as the database is not ready, we render nothing at all (the Splash Screen covers the screen)
-  if (!success) {
-    return null;
-  }
-
-  return (
-    <SafeAreaProvider>
-      <ThemeProvider>
-        <Suspense
-          fallback={
-            <View
-              style={{
-                flex: 1,
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: theme.theme.colors.bg.base,
-              }}
-            >
-              <ActivityIndicator
-                animating={true}
-                color={theme.theme.colors.accent.blue}
-                size="large"
-              />
-            </View>
-          }
-        >
-          <MainStack />
-        </Suspense>
-      </ThemeProvider>
-    </SafeAreaProvider>
   );
 }

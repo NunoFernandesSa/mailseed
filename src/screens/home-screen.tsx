@@ -1,12 +1,11 @@
 import { ScreenContainer } from "@/components/shared";
 import { useThemedStyles } from "@/hooks/useThemedStyles";
-import { platformService } from "@/services/platformService";
 import { usePlatformStore } from "@/store/platformStore";
-import { useEffect } from "react";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 
 const HomeScreen = () => {
   const { items, isLoading, error } = usePlatformStore();
+
   const s = useThemedStyles((theme) => ({
     title: {
       fontSize: theme.typography.size.xl,
@@ -49,68 +48,10 @@ const HomeScreen = () => {
     },
   }));
 
-  const stats = platformService.stats();
-
-  useEffect(() => {
-    platformService.loadAll();
-  }, []);
-
   return (
     <ScreenContainer scrollable={false}>
       <Text style={s.title}>📬 Mailseed</Text>
-      <Text style={s.subtitle}>{stats.total} platforms connected</Text>
-
-      <View style={s.card}>
-        <Text style={s.cardTitle}>
-          Dashboard · {isLoading ? "loading…" : `${stats.total} rows`}
-        </Text>
-        {error ? (
-          <Text style={{ color: "red", marginTop: 8 }}>{error}</Text>
-        ) : null}
-        <View style={s.cardRow}>
-          <Text style={s.meta}>⭐ Starred: {stats.starred}</Text>
-        </View>
-        {stats.topTags.length > 0 ? (
-          <View style={s.cardRow}>
-            <Text style={s.meta}>
-              🏷️ Top tags:{" "}
-              {stats.topTags.map(([name, n]) => `${name} (${n})`).join(", ")}
-            </Text>
-          </View>
-        ) : null}
-      </View>
-
-      <View style={[s.card, { padding: 0, overflow: "hidden" }]}>
-        <View
-          style={{
-            padding: s.card.padding,
-            paddingBottom: s.card.padding as number,
-          }}
-        >
-          <Text style={s.cardTitle}>Platforms</Text>
-        </View>
-        {items.length === 0 ? (
-          <View style={{ padding: s.card.padding, paddingTop: 0 }}>
-            <Text style={s.meta}>No platforms yet.</Text>
-          </View>
-        ) : (
-          items.map((p) => (
-            <View
-              key={p.id}
-              style={[s.cardRow, { paddingHorizontal: s.card.padding }]}
-            >
-              <Text style={p.starred ? s.starred : s.normal}>
-                {p.starred ? "⭐ " : ""}
-                {p.name}
-              </Text>
-              <Text style={s.meta}>{p.email}</Text>
-              {p.tags && p.tags.length > 0 ? (
-                <Text style={s.rowBadge}>{p.tags.join(" · ")}</Text>
-              ) : null}
-            </View>
-          ))
-        )}
-      </View>
+      <Text style={s.subtitle}>x platforms connected</Text>
     </ScreenContainer>
   );
 };
