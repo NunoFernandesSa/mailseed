@@ -1,5 +1,5 @@
-import { MigrationErrorFallback } from "@/components";
-import { CenteredView, SuspenseFallback } from "@/components/shared";
+import { CenteredView, MigrationErrorFallback } from "@/components";
+import SuspenseFallback from "@/components/shared/SuspenseFallback";
 import { ThemeProvider } from "@/context/theme/ThemeContext";
 import { useTheme } from "@/hooks/useTheme";
 import { Ionicons } from "@expo/vector-icons";

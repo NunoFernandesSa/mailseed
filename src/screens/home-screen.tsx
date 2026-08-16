@@ -1,4 +1,4 @@
-import { ScreenContainer } from "@/components/shared";
+import { ScreenContainer } from "@/components";
 import { useThemedStyles } from "@/hooks/useThemedStyles";
 import { usePlatformStore } from "@/store/platformStore";
 import { Text } from "react-native";

@@ -1,4 +1,4 @@
-import { ScreenContainer } from "@/components/shared";
+import { ScreenContainer } from "@/components";
 import type { Platform } from "@/db/schema";
 import { useTheme } from "@/hooks/useTheme";
 import { useThemedStyles } from "@/hooks/useThemedStyles";
@@ -85,4 +85,3 @@ const SearchScreen = () => {
 };
 
 export { SearchScreen };
-

@@ -1,4 +1,4 @@
-import { CenteredView } from "@/components/shared";
+import { CenteredView } from "@/components";
 import { useTheme } from "@/hooks/useTheme";
 import { ActivityIndicator } from "react-native";
 
@@ -15,4 +15,4 @@ const SuspenseFallback = () => {
   );
 };
 
-export { SuspenseFallback };
+export default SuspenseFallback;
