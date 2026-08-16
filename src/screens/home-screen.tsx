@@ -5,7 +5,7 @@ const HomeScreen = () => {
   const { items, isLoading, error } = usePlatformStore();
 
   return (
-    <ScreenContainer scrollable={false}>
+    <ScreenContainer scrollable={true} safeArea={true}>
       <Header />
     </ScreenContainer>
   );

@@ -119,7 +119,7 @@ function MainStack() {
             ),
           }}
         >
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: true }} />
         </Stack>
       </View>
     </>
