@@ -107,7 +107,19 @@ function MainStack() {
             headerRight: () => (
               <TouchableOpacity
                 onPress={toggleTheme}
-                style={{ marginRight: theme.spacing.md }}
+                style={{
+                  marginRight: theme.spacing.md,
+                  padding: 9,
+                  backgroundColor:
+                    mode === "dark"
+                      ? theme.colors.border.subtle
+                      : theme.colors.bg.base,
+                  borderColor:
+                    mode === "dark"
+                      ? theme.colors.border.subtle
+                      : theme.colors.bg.surface,
+                  borderRadius: 12,
+                }}
                 hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
               >
                 <Ionicons
