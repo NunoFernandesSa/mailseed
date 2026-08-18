@@ -3,7 +3,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { useThemedStyles } from "@/hooks/useThemedStyles";
 import { Text, View } from "react-native";
 
-const SettingsScreen = () => {
+export const SettingsScreen = () => {
   const { mode, toggleTheme } = useTheme();
 
   const s = useThemedStyles((t) => ({
@@ -20,7 +20,7 @@ const SettingsScreen = () => {
       ...t.mixins.card,
       paddingHorizontal: 0,
       paddingVertical: 0,
-      overflow: "hidden",
+      overflow: "hidden" as const,
     },
     groupTitle: {
       paddingHorizontal: t.spacing.md,
@@ -29,15 +29,15 @@ const SettingsScreen = () => {
       color: t.colors.text.secondary,
       fontSize: t.typography.size.sm,
       fontWeight: t.typography.weight.semibold,
-      textTransform: "uppercase",
+      textTransform: "uppercase" as const,
       letterSpacing: 0.5,
     },
     row: {
       minHeight: 56,
       paddingHorizontal: t.spacing.md,
-      alignItems: "center",
-      flexDirection: "row",
-      justifyContent: "space-between",
+      alignItems: "center" as const,
+      flexDirection: "row" as const,
+      justifyContent: "space-between" as const,
       borderTopWidth: 1,
       borderTopColor: t.colors.border.subtle,
     },
@@ -45,8 +45,8 @@ const SettingsScreen = () => {
       borderTopWidth: 0,
     },
     rowLabelGroup: {
-      flexDirection: "row",
-      alignItems: "center",
+      flexDirection: "row" as const,
+      alignItems: "center" as const,
       gap: t.spacing.sm + 4,
     },
     rowLabel: {
@@ -62,8 +62,8 @@ const SettingsScreen = () => {
       width: 32,
       height: 32,
       borderRadius: 8,
-      alignItems: "center",
-      justifyContent: "center",
+      alignItems: "center" as const,
+      justifyContent: "center" as const,
       backgroundColor: t.colors.bg.hover,
     },
     chevron: {
@@ -82,5 +82,3 @@ const SettingsScreen = () => {
     </ScreenContainer>
   );
 };
-
-export { SettingsScreen };

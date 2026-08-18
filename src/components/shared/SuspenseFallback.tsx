@@ -2,6 +2,11 @@ import { CenteredView } from "@/components";
 import { useTheme } from "@/hooks/useTheme";
 import { ActivityIndicator } from "react-native";
 
+/**
+ * Fallback component for Suspense when loading.
+ * Displays an ActivityIndicator in the center of the screen.
+ * @returns React component for fallback loading display
+ */
 const SuspenseFallback = () => {
   const { theme } = useTheme();
   return (
@@ -15,4 +20,4 @@ const SuspenseFallback = () => {
   );
 };
 
-export default SuspenseFallback;
+export { SuspenseFallback };

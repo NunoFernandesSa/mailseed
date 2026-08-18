@@ -1,0 +1,9 @@
+const initialsFromEmail = (email: string): string => {
+  const [local = ""] = email.split("@");
+  const clean = local.replace(/[^a-zA-Z0-9]/g, "");
+  if (clean.length === 0) return email.slice(0, 2).toUpperCase();
+  if (clean.length === 1) return clean.toUpperCase();
+  return (clean[0] + clean[clean.length - 1]).toUpperCase();
+};
+
+export { initialsFromEmail };

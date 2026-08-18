@@ -1,63 +1,60 @@
 import { useThemedStyles } from "@/hooks/useThemedStyles";
-import { ReactNode } from "react";
+import type { HeaderProps } from "@/types";
 import { Text, View } from "react-native";
 
-interface HeaderProps {
-  icon?: ReactNode;
-  title: string;
-  subtitle?: string;
-  emailsCount?: number;
-}
-
-export const HomeHeader = ({
-  icon,
-  title,
-  subtitle,
-  emailsCount,
-}: HeaderProps) => {
-  const s = useThemedStyles((theme) => ({
+/**
+ * Header - Generic header component for settings, search, etc.
+ * Displays a title, subtitle, and optional icon with a count badge.
+ */
+export const Header = ({ title, subtitle, icon, count }: HeaderProps) => {
+  const s = useThemedStyles((t) => ({
     card: {
-      ...theme.mixins.card,
-      gap: theme.spacing.xs,
+      ...t.mixins.card,
+      gap: t.spacing.xs,
+      paddingVertical: t.spacing.md,
+      paddingHorizontal: t.spacing.md,
     },
-    titleRow: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: theme.spacing.sm,
+    row: {
+      flexDirection: "row" as const,
+      alignItems: "center" as const,
+      gap: t.spacing.sm,
     },
-    iconContainer: {
-      justifyContent: "center",
-      alignItems: "center",
-      color: theme.colors.text.primary,
+    iconWrap: {
+      width: 32,
+      height: 32,
+      borderRadius: 8,
+      alignItems: "center" as const,
+      justifyContent: "center" as const,
+      backgroundColor: t.colors.bg.card,
     },
     title: {
-      fontSize: theme.typography.size.xl,
-      fontWeight: theme.typography.weight.bold,
-      color: theme.colors.text.primary,
+      fontSize: t.typography.size.xl,
+      fontWeight: t.typography.weight.bold,
+      color: t.colors.text.primary,
       flexShrink: 1,
     },
-    countBadge: {
-      fontSize: theme.typography.size.sm,
-      fontWeight: theme.typography.weight.semibold,
-      color: theme.colors.text.secondary,
+    badge: {
+      ...t.mixins.badge(t.colors.accent.blue),
     },
     subtitle: {
-      fontSize: theme.typography.size.sm,
-      color: theme.colors.text.secondary,
+      fontSize: t.typography.size.sm,
+      color: t.colors.text.secondary,
+      marginTop: t.spacing.xs,
     },
   }));
 
   return (
     <View style={s.card}>
-      <View style={s.titleRow}>
-        {icon && <View style={s.iconContainer}>{icon}</View>}
+      <View style={s.row}>
+        {icon ? <View style={s.iconWrap}>{icon}</View> : null}
         <Text style={s.title}>{title}</Text>
-        {emailsCount !== undefined && (
-          <Text style={s.countBadge}>({emailsCount})</Text>
-        )}
+        {count !== undefined && count > 0 ? (
+          <View style={s.badge}>
+            <Text>{count}</Text>
+          </View>
+        ) : null}
       </View>
-
-      {subtitle && <Text style={s.subtitle}>{subtitle}</Text>}
+      {subtitle ? <Text style={s.subtitle}>{subtitle}</Text> : null}
     </View>
   );
 };

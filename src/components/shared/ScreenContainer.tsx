@@ -1,41 +1,15 @@
 import { useTheme } from "@/hooks/useTheme";
-import {
-  ScrollView,
-  StyleSheet,
-  View,
-  type FlexStyle,
-  type ScrollViewProps,
-  type StyleProp,
-  type ViewStyle,
-} from "react-native";
+import { ScreenContainerProps } from "@/types";
+import { ScrollView, StyleSheet, View, type FlexStyle } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export interface ScreenContainerProps {
-  children: React.ReactNode;
-  /** Wrap content in a ScrollView. Default: false */
-  scrollable?: boolean;
-  /** Extra styles added to the outer wrapper. Overrides bg if provided. */
-  style?: StyleProp<ViewStyle>;
-  /** Styles for the inner padding zone. Use this instead of padding in `style`. */
-  contentStyle?: StyleProp<FlexStyle>;
-  /** Apply SafeAreaView insets. Default: true (safe area respects bg color) */
-  safeArea?: boolean;
-  /** Horizontal padding for the content area. Default: theme.spacing.xl (32) */
-  paddingX?: number;
-  /** Vertical padding for the content area. Default: theme.spacing.lg (24) */
-  paddingY?: number;
-  /** Gap between children inside content area. Default: 12 */
-  gap?: number;
-  /** Props forwarded to ScrollView when `scrollable` is true */
-  scrollViewProps?: Omit<ScrollViewProps, "style" | "contentContainerStyle">;
-}
-
 /**
- * Use this wrapper as the ROOT of every screen.
- * → Automatically applies the theme bg, default spacing, safe area, and optional scroll.
- * → NEVER set `backgroundColor` manually on a screen again!
+ * A foundational wrapper component that should be used as the root element for every screen in the application.
+ * Automatically handles core screen layout concerns: applies theme-consistent background colors, standardizes spacing
+ * across the app, manages safe area insets for notch/dynamic island devices, and supports scrollable content when needed.
+ * Eliminates the need to manually set background colors or recreate base layout styling on each individual screen.
  */
-export const ScreenContainer = ({
+const ScreenContainer = ({
   children,
   scrollable = false,
   style,
@@ -83,6 +57,11 @@ export const ScreenContainer = ({
   );
 };
 
+export { ScreenContainer };
+
+// ============================================================================
+// ScreenContainer styles
+// =============================================================================
 const styles = StyleSheet.create({
   outer: { flex: 1 },
   innerScroll: { flex: 1 },

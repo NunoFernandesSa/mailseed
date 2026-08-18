@@ -3,6 +3,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+/**
+ * MigrationErrorFallback - Fallback component for migration errors
+ * Displays an alert icon, error message, and optional message
+ */
 const MigrationErrorFallback = ({ message }: { message?: string }) => {
   const { theme } = useTheme();
 
