@@ -3,13 +3,18 @@ import { ReactNode } from "react";
 import { Text, View } from "react-native";
 
 interface HeaderProps {
+  icon?: ReactNode;
   title: string;
   subtitle?: string;
-  count?: number;
-  icon?: ReactNode;
+  emailsCount?: number;
 }
 
-export const Header = ({ title, subtitle, count, icon }: HeaderProps) => {
+export const HomeHeader = ({
+  icon,
+  title,
+  subtitle,
+  emailsCount,
+}: HeaderProps) => {
   const s = useThemedStyles((theme) => ({
     card: {
       ...theme.mixins.card,
@@ -47,7 +52,9 @@ export const Header = ({ title, subtitle, count, icon }: HeaderProps) => {
       <View style={s.titleRow}>
         {icon && <View style={s.iconContainer}>{icon}</View>}
         <Text style={s.title}>{title}</Text>
-        {count !== undefined && <Text style={s.countBadge}>({count})</Text>}
+        {emailsCount !== undefined && (
+          <Text style={s.countBadge}>({emailsCount})</Text>
+        )}
       </View>
 
       {subtitle && <Text style={s.subtitle}>{subtitle}</Text>}
