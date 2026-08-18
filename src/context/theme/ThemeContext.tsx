@@ -1,16 +1,10 @@
 import { ThemeMode } from "@/constants/colors";
-import { AppTheme, createTheme } from "@/constants/theme";
+import { createTheme } from "@/constants/theme";
+import { ThemeContextType } from "@/types/context-types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, ReactNode, useEffect, useState } from "react";
 
 const STORAGE_KEY = "app-theme";
-
-interface ThemeContextType {
-  theme: AppTheme;
-  mode: ThemeMode;
-  toggleTheme: () => void;
-  setMode: (mode: ThemeMode) => void;
-}
 
 // Context theme
 export const ThemeContext = createContext<ThemeContextType | undefined>(

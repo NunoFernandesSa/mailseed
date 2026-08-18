@@ -1,10 +1,6 @@
 import type { AppTheme } from "@/constants/theme";
-import type { ImageStyle, TextStyle, ViewStyle } from "react-native";
+import { NamedStyles } from "@/types/theme-types";
 import { useTheme } from "./useTheme";
-
-type NamedStyles<T> = {
-  [P in keyof T]: ViewStyle | TextStyle | ImageStyle;
-};
 
 /**
  * Hook to build themed styles once inside a component.
