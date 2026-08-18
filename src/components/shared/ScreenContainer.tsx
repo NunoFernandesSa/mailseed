@@ -9,7 +9,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
  * across the app, manages safe area insets for notch/dynamic island devices, and supports scrollable content when needed.
  * Eliminates the need to manually set background colors or recreate base layout styling on each individual screen.
  */
-const ScreenContainer = ({
+export const ScreenContainer = ({
   children,
   scrollable = false,
   style,
@@ -56,8 +56,6 @@ const ScreenContainer = ({
     </Outer>
   );
 };
-
-export { ScreenContainer };
 
 // ============================================================================
 // ScreenContainer styles

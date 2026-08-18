@@ -8,7 +8,11 @@ import { View } from "react-native";
  * @param children - Child elements to render inside the centered container
  * @param style - Optional additional styles to merge with the base container styles
  */
-const CenteredView = ({ bgColor, children, style }: CenteredViewProps) => {
+export const CenteredView = ({
+  bgColor,
+  children,
+  style,
+}: CenteredViewProps) => {
   return (
     <View
       style={[
@@ -25,5 +29,3 @@ const CenteredView = ({ bgColor, children, style }: CenteredViewProps) => {
     </View>
   );
 };
-
-export { CenteredView };

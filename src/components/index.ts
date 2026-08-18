@@ -21,4 +21,5 @@ export { SuspenseFallback } from "./shared/SuspenseFallback";
 // ==========================================================================
 // Dashboard components
 // ==========================================================================
-export { PlatformMiniCard } from "./dashboard/PlatformMiniCard";
+export { EmptyState } from "./dashboard/empty-state";
+export { PlatformMiniCard } from "./dashboard/platform-mini-card/index.tsx";

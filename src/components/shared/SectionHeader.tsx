@@ -4,10 +4,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
 
 /**
- * En-tête de section pour le dashboard.
- * [Titre · sous-titre]      [See all ▸]
+ * Section header component for dashboard sections.
+ * Displays section title with optional subtitle, and a "See all" link with chevron on the right.
  */
-const SectionHeader = ({
+export const SectionHeader = ({
   title,
   subtitle,
   seeAllLabel,
@@ -84,5 +84,3 @@ const SectionHeader = ({
     </View>
   );
 };
-
-export { SectionHeader };

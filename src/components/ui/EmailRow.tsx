@@ -5,7 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
 
 /** Email row component */
-const EmailRow = ({
+export const EmailRow = ({
   email,
   label,
   platformCount,
@@ -117,4 +117,3 @@ const EmailRow = ({
   );
 };
 
-export { EmailRow };

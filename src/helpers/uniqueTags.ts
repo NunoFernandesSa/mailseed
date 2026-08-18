@@ -1,4 +1,9 @@
-const uniqueTags = (tagRows: string[]): number => {
+/**
+ * Count unique tags from an array of tag strings.
+ * @param tagRows - An array of tag strings, each representing a list of tags.
+ * @returns The total number of unique tags found in the input.
+ */
+export const uniqueTags = (tagRows: string[]): number => {
   const set = new Set<string>();
   tagRows.forEach((raw) => {
     try {
@@ -15,5 +20,3 @@ const uniqueTags = (tagRows: string[]): number => {
   });
   return set.size;
 };
-
-export { uniqueTags };

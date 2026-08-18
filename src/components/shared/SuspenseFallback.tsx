@@ -3,11 +3,11 @@ import { useTheme } from "@/hooks/useTheme";
 import { ActivityIndicator } from "react-native";
 
 /**
- * Fallback component for Suspense when loading.
+ * SuspenseFallback - Fallback component for Suspense when loading.
  * Displays an ActivityIndicator in the center of the screen.
  * @returns React component for fallback loading display
  */
-const SuspenseFallback = () => {
+export const SuspenseFallback = () => {
   const { theme } = useTheme();
   return (
     <CenteredView bgColor={theme.colors.bg.base}>
@@ -19,5 +19,3 @@ const SuspenseFallback = () => {
     </CenteredView>
   );
 };
-
-export { SuspenseFallback };

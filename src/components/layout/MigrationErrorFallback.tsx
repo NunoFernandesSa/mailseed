@@ -7,7 +7,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
  * MigrationErrorFallback - Fallback component for migration errors
  * Displays an alert icon, error message, and optional message
  */
-const MigrationErrorFallback = ({ message }: { message?: string }) => {
+export const MigrationErrorFallback = ({ message }: { message?: string }) => {
   const { theme } = useTheme();
 
   return (
@@ -66,5 +66,3 @@ const MigrationErrorFallback = ({ message }: { message?: string }) => {
     </SafeAreaView>
   );
 };
-
-export { MigrationErrorFallback };

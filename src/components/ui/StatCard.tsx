@@ -3,7 +3,11 @@ import type { StatCardProps } from "@/types/global-types";
 import { Ionicons } from "@expo/vector-icons";
 import { Text, View } from "react-native";
 
-const StatCard = ({
+/**
+ * A card component that displays a key statistic with an icon, label, and value.
+ * Supports custom colors and semantic variants for positive/danger states.
+ */
+export const StatCard = ({
   icon,
   label,
   value,
@@ -76,5 +80,3 @@ const StatCard = ({
     </View>
   );
 };
-
-export { StatCard };

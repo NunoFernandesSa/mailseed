@@ -4,7 +4,7 @@ import { useThemedStyles } from "@/hooks/useThemedStyles";
 import { useState } from "react";
 import { TextInput } from "react-native";
 
-const SearchScreen = () => {
+export const SearchScreen = () => {
   const { theme } = useTheme();
   const [query, setQuery] = useState("");
 
@@ -62,5 +62,3 @@ const SearchScreen = () => {
     </ScreenContainer>
   );
 };
-
-export { SearchScreen };

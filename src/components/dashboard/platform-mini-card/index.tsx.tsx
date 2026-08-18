@@ -3,7 +3,15 @@ import type { PlatformMiniCardProps } from "@/types/global-types";
 import { Ionicons } from "@expo/vector-icons";
 import { Text, View } from "react-native";
 
-const PlatformMiniCard = ({
+/**
+ * PlatformMiniCard - A mini card component for displaying platform information
+ * @param name - Name of the platform
+ * @param url - URL of the platform
+ * @param email - Email address of the platform
+ * @param isFirst - Whether this is the first platform card in the list
+ * @returns React component for platform mini display
+ */
+export const PlatformMiniCard = ({
   name,
   url,
   email,
@@ -72,5 +80,3 @@ const PlatformMiniCard = ({
     </View>
   );
 };
-
-export { PlatformMiniCard };

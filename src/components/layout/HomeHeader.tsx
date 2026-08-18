@@ -7,7 +7,7 @@ import { Text, View } from "react-native";
  * HomeHeader - Top statistics card for the dashboard home screen
  * Displays key metrics for total emails and connected platforms in a styled header card
  */
-const HomeHeader = ({
+export const HomeHeader = ({
   emailsCount,
   platformsCount,
   subtitle,
@@ -104,4 +104,3 @@ const HomeHeader = ({
     </View>
   );
 };
-export { HomeHeader };

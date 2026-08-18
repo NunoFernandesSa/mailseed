@@ -1,6 +1,6 @@
 export {
   CenteredViewProps,
-  ScreenContainerProps
+  ScreenContainerProps,
 } from "./components/shared/index.types";
 
 export { SectionHeaderProps } from "./components/shared/index.types";
@@ -11,6 +11,5 @@ export {
   HomeHeaderProps,
   PlatformMiniCardProps,
   StatCardProps,
-  StatVariant
+  StatVariant,
 } from "./global-types";
-
