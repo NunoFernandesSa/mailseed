@@ -1,6 +1,6 @@
-import { CenteredView } from "@/components";
 import { useTheme } from "@/hooks/useTheme";
 import { ActivityIndicator } from "react-native";
+import { CenteredView } from "../centered-view";
 
 /**
  * SuspenseFallback - Fallback component for Suspense when loading.

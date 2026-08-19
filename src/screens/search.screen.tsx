@@ -1,4 +1,4 @@
-import { ScreenContainer } from "@/components";
+import { ScreenContainer } from "@/components/shared/screen-container";
 import { useTheme } from "@/hooks/useTheme";
 import { useThemedStyles } from "@/hooks/useThemedStyles";
 import { useState } from "react";

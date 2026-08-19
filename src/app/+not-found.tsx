@@ -1,4 +1,4 @@
-import { ScreenContainer } from "@/components";
+import { ScreenContainer } from "@/components/shared/screen-container";
 import { useThemedStyles } from "@/hooks/useThemedStyles";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, Stack, router } from "expo-router";

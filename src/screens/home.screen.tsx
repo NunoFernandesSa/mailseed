@@ -1,12 +1,10 @@
-import {
-  EmailRow,
-  EmptyState,
-  HomeHeader,
-  PlatformMiniCard,
-  ScreenContainer,
-  SectionHeader,
-  StatCard,
-} from "@/components";
+import { EmptyState } from "@/components/dashboard/empty-state";
+import { PlatformMiniCard } from "@/components/dashboard/platform-mini-card";
+import { HomeHeader } from "@/components/layout/home-header";
+import { ScreenContainer } from "@/components/shared/screen-container";
+import { SectionHeader } from "@/components/shared/section-header";
+import { EmailRow } from "@/components/ui/email-row";
+import StatCard from "@/components/ui/stat-card";
 import { uniqueTags } from "@/helpers/uniqueTags";
 import { useDashboardStyles } from "@/hooks/useDashboardStyles";
 import useMailseedStore from "@/store/useMailseedStore";
