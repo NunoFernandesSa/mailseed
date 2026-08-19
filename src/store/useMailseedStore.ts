@@ -7,7 +7,7 @@ import {
   type PlatformWithEmail,
 } from "@/db/schema";
 import { emailService, platformService } from "@/services";
-import { MailseedState } from "@/types/store-types";
+import { MailseedState } from "@/types/store/mailseed-state.types";
 import { create } from "zustand";
 
 /**
