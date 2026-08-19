@@ -1,4 +1,4 @@
-import { ThemeMode } from "@/constants/colors";
+import { ThemeMode } from "@/constants/colors.constants";
 import { AppTheme } from "@/constants/theme";
 
 export interface ThemeContextType {

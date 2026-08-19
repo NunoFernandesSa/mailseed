@@ -1,6 +1,6 @@
-import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { AppTheme } from "@/constants/theme";
 
-export const s = useThemedStyles((t) => ({
+export const makeStyle = (t: AppTheme) => ({
   card: {
     ...t.mixins.card,
     gap: t.spacing.xs,
@@ -34,4 +34,4 @@ export const s = useThemedStyles((t) => ({
     color: t.colors.text.secondary,
     marginTop: t.spacing.xs,
   },
-}));
+});

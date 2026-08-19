@@ -1,6 +1,6 @@
-import { BASE_COLORS, COLOR_PALETTES, ThemeMode } from "./colors";
-import { SPACING } from "./spacing";
-import { TYPOGRAPHY } from "./typography";
+import { BASE_COLORS, COLOR_PALETTES, ThemeMode } from "./colors.constants";
+import { SPACING } from "./spacing.constants";
+import { TYPOGRAPHY } from "./typography.constants";
 
 // Fonction qui génère le thème complet selon le mode passé en paramètre
 export const createTheme = (mode: ThemeMode = "dark") => {

@@ -1,5 +1,6 @@
+import { useThemedStyles } from "@/hooks/useThemedStyles";
 import { Text, View } from "react-native";
-import { s } from "./styles";
+import { makeStyle } from "./styles";
 import type { HeaderProps } from "./types";
 
 /**
@@ -7,6 +8,8 @@ import type { HeaderProps } from "./types";
  * Displays a title, subtitle, and optional icon with a count badge.
  */
 export const Header = ({ title, subtitle, icon, count }: HeaderProps) => {
+  const s = useThemedStyles(makeStyle);
+
   return (
     <View style={s.card}>
       <View style={s.row}>

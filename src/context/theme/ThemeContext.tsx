@@ -1,4 +1,4 @@
-import { ThemeMode } from "@/constants/colors";
+import { ThemeMode } from "@/constants/colors.constants";
 import { createTheme } from "@/constants/theme";
 import { ThemeContextType } from "@/types/context-types";
 import AsyncStorage from "@react-native-async-storage/async-storage";

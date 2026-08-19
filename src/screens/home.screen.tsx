@@ -2,11 +2,11 @@ import {
   EmailRow,
   EmptyState,
   HomeHeader,
+  PlatformMiniCard,
   ScreenContainer,
   SectionHeader,
   StatCard,
 } from "@/components";
-import { PlatformMiniCard } from "@/components/dashboard/platform-mini-card/index.tsx";
 import { uniqueTags } from "@/helpers/uniqueTags";
 import { useDashboardStyles } from "@/hooks/useDashboardStyles";
 import useMailseedStore from "@/store/useMailseedStore";

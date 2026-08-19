@@ -1,6 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
-import { s } from "./styles";
+
+import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { makeStyles } from "./styles";
 import { SectionHeaderProps } from "./types";
 
 /**
@@ -13,6 +15,7 @@ export const SectionHeader = ({
   seeAllLabel,
   onPressSeeAll,
 }: SectionHeaderProps) => {
+  const s = useThemedStyles(makeStyles);
   return (
     <View style={s.row}>
       <View style={s.titles}>

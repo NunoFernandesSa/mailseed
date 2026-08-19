@@ -1,6 +1,7 @@
+import { useThemedStyles } from "@/hooks/useThemedStyles";
 import { Ionicons } from "@expo/vector-icons";
 import { Text, View } from "react-native";
-import { s } from "./styles";
+import { makeStyles } from "./styles";
 import type { StatCardProps } from "./types";
 
 /**
@@ -11,9 +12,11 @@ export const StatCard = ({
   icon,
   label,
   value,
-  color,
   variant = "default",
+  color,
 }: StatCardProps) => {
+  const s = useThemedStyles((theme) => makeStyles(theme, variant, color));
+
   return (
     <View style={s.card}>
       <View style={s.bubble}>
@@ -28,3 +31,5 @@ export const StatCard = ({
     </View>
   );
 };
+
+export default StatCard;

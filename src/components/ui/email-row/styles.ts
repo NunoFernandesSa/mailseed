@@ -1,6 +1,6 @@
-import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { AppTheme } from "@/constants/theme";
 
-export const s = useThemedStyles((t) => ({
+export const makeStyles = (t: AppTheme) => ({
   row: {
     flexDirection: "row" as const,
     alignItems: "center" as const,
@@ -52,4 +52,4 @@ export const s = useThemedStyles((t) => ({
   chevron: {
     color: t.colors.text.disabled,
   },
-}));
+});

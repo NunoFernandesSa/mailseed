@@ -1,6 +1,7 @@
+import { useThemedStyles } from "@/hooks/useThemedStyles";
 import { Ionicons } from "@expo/vector-icons";
 import { Text, View } from "react-native";
-import { s } from "./styles";
+import { makeStyle } from "./styles";
 import { HomeHeaderProps } from "./types";
 
 /**
@@ -12,6 +13,8 @@ export const HomeHeader = ({
   platformsCount,
   subtitle,
 }: HomeHeaderProps) => {
+  const s = useThemedStyles(makeStyle);
+
   return (
     <View style={s.card}>
       <View style={s.row}>

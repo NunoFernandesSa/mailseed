@@ -1,6 +1,6 @@
-import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { AppTheme } from "@/constants/theme";
 
-export const s = useThemedStyles((t) => {
+export const makeStyle = (t: AppTheme) => {
   const BLUE = t.colors.accent.blue;
   const GREEN = t.colors.accent.green;
   return {
@@ -60,4 +60,4 @@ export const s = useThemedStyles((t) => {
     BLUE,
     GREEN,
   };
-});
+};

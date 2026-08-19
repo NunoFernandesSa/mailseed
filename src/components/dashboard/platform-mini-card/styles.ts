@@ -1,6 +1,6 @@
-import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { AppTheme } from "@/constants/theme";
 
-export const s = useThemedStyles((t) => ({
+export const makeStyles = (t: AppTheme) => ({
   miniCard: {
     flexDirection: "row" as const,
     alignItems: "center" as const,
@@ -29,4 +29,4 @@ export const s = useThemedStyles((t) => ({
   accentGreen: t.colors.accent.green,
   borderSubtle: t.colors.border.subtle,
   chevron: t.colors.text.disabled,
-}));
+});

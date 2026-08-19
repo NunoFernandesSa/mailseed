@@ -1,7 +1,8 @@
 import { initialsFromEmail } from "@/helpers";
+import { useThemedStyles } from "@/hooks/useThemedStyles";
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
-import { s } from "./styles";
+import { makeStyles } from "./styles";
 import { EmailRowProps } from "./types";
 
 /** Email row component */
@@ -13,6 +14,8 @@ export const EmailRow = ({
   disabled = false,
   showInitials = false,
 }: EmailRowProps) => {
+  const s = useThemedStyles(makeStyles);
+
   const content = (
     <View style={s.row}>
       <View style={s.avatar}>

@@ -1,13 +1,14 @@
-import { useThemedStyles } from "@/hooks/useThemedStyles";
+import { AppTheme } from "@/constants/theme";
+import { StatVariant } from "./types";
 
-export const s = useThemedStyles((t) => {
+export const makeStyles = (
+  t: AppTheme,
+  variant: StatVariant,
+  color?: string,
+) => {
   const accent =
-    (color as string) ??
-    (variant === "positive"
-      ? t.colors.accent.green
-      : variant === "danger"
-        ? t.colors.accent.red
-        : t.colors.accent.blue);
+    color ??
+    (variant === "positive" ? t.colors.accent.green : t.colors.accent.blue);
   return {
     card: {
       ...t.mixins.card,
@@ -44,4 +45,4 @@ export const s = useThemedStyles((t) => {
     },
     accent,
   };
-});
+};

@@ -1,6 +1,7 @@
+import { useThemedStyles } from "@/hooks/useThemedStyles";
 import { Ionicons } from "@expo/vector-icons";
 import { Text, View } from "react-native";
-import { s } from "./styles";
+import { makeStyles } from "./styles";
 import { PlatformMiniCardProps } from "./types";
 
 /**
@@ -17,6 +18,8 @@ export const PlatformMiniCard = ({
   email,
   isFirst,
 }: PlatformMiniCardProps) => {
+  const s = useThemedStyles(makeStyles);
+
   return (
     <View
       style={[
