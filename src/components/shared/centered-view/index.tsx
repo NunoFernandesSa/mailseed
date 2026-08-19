@@ -1,5 +1,5 @@
-import { CenteredViewProps } from "@/types";
 import { View } from "react-native";
+import { CenteredViewProps } from "./types";
 
 /**
  * A React Native View component that centers its child content both vertically and horizontally.

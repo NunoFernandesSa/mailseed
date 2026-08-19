@@ -1,7 +1,8 @@
 import { useTheme } from "@/hooks/useTheme";
-import { ScreenContainerProps } from "@/types";
-import { ScrollView, StyleSheet, View, type FlexStyle } from "react-native";
+import { ScrollView, View, type FlexStyle } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { styles } from "./styles";
+import { ScreenContainerProps } from "./types";
 
 /**
  * A foundational wrapper component that should be used as the root element for every screen in the application.
@@ -56,12 +57,3 @@ export const ScreenContainer = ({
     </Outer>
   );
 };
-
-// ============================================================================
-// ScreenContainer styles
-// =============================================================================
-const styles = StyleSheet.create({
-  outer: { flex: 1 },
-  innerScroll: { flex: 1 },
-  innerView: { flex: 1 },
-});
