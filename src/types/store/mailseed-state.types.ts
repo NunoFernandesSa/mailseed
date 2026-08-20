@@ -25,4 +25,7 @@ export interface MailseedState {
   /* ---------- Platforms CRUD ---------- */
   addPlatform: (data: NewPlatform) => Promise<Platform | undefined>;
   deletePlatform: (id: number) => Promise<void>;
+
+  /* ---------- Utils ---------- */
+  getPlatformCountByEmail: () => Map<number, number>;
 }

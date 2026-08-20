@@ -113,6 +113,18 @@ const useMailseedStore = create<MailseedState>((set, get) => ({
       set({ error: msg });
     }
   },
+
+  /**
+   * @description Gets the count of platforms associated with each email.
+   * @returns An object mapping email IDs to platform counts.
+   */
+  getPlatformCountByEmail: () => {
+    const map = new Map<number, number>();
+    get().platforms.forEach((platform) => {
+      map.set(platform.emailId, (map.get(platform.emailId) || 0) + 1);
+    });
+    return map;
+  },
 }));
 
 export default useMailseedStore;

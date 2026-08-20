@@ -1,3 +1,4 @@
+import { useAppData } from "@/hooks/useAppData";
 import { useTheme } from "@/hooks/useTheme";
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
@@ -13,6 +14,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
  */
 export default function TabsLayout() {
   const { theme } = useTheme();
+  const { t } = useAppData();
 
   const insets = useSafeAreaInsets();
 
@@ -50,7 +52,7 @@ export default function TabsLayout() {
         <Tabs.Screen
           name="index"
           options={{
-            title: "Home",
+            title: t.tabs.home,
             tabBarIcon: ({ color }) => (
               <Ionicons name="home" size={24} color={color} />
             ),
@@ -59,7 +61,7 @@ export default function TabsLayout() {
         <Tabs.Screen
           name="search"
           options={{
-            title: "Search",
+            title: t.tabs.search,
             tabBarIcon: ({ color }) => (
               <Ionicons name="search" size={24} color={color} />
             ),
@@ -68,7 +70,7 @@ export default function TabsLayout() {
         <Tabs.Screen
           name="settings"
           options={{
-            title: "Settings",
+            title: t.tabs.settings,
             tabBarIcon: ({ color }) => (
               <Ionicons name="settings" size={24} color={color} />
             ),

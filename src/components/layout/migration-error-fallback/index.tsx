@@ -1,3 +1,4 @@
+import { useAppData } from "@/hooks/useAppData";
 import { useTheme } from "@/hooks/useTheme";
 import { Ionicons } from "@expo/vector-icons";
 import { Text, View } from "react-native";
@@ -9,6 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
  */
 export const MigrationErrorFallback = ({ message }: { message?: string }) => {
   const { theme } = useTheme();
+  const { t } = useAppData();
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.bg.base }}>
@@ -34,7 +36,7 @@ export const MigrationErrorFallback = ({ message }: { message?: string }) => {
             textAlign: "center",
           }}
         >
-          Erreur de démarrage
+          {t.error.dbInitTitle}
         </Text>
         <Text
           style={{
@@ -44,8 +46,7 @@ export const MigrationErrorFallback = ({ message }: { message?: string }) => {
             lineHeight: theme.typography.size.lg,
           }}
         >
-          Impossible d&apos;initialiser la base de données locale. Veuillez
-          relancer l&apos;application.
+          {t.error.dbInitSubtitle}
         </Text>
         {message ? (
           <Text

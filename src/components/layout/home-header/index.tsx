@@ -1,3 +1,4 @@
+import { useAppData } from "@/hooks/useAppData";
 import { useThemedStyles } from "@/hooks/useThemedStyles";
 import { Ionicons } from "@expo/vector-icons";
 import { Text, View } from "react-native";
@@ -14,6 +15,7 @@ export const HomeHeader = ({
   subtitle,
 }: HomeHeaderProps) => {
   const s = useThemedStyles(makeStyle);
+  const { t } = useAppData();
 
   return (
     <View style={s.card}>
@@ -24,7 +26,7 @@ export const HomeHeader = ({
             <Ionicons name="mail-outline" size={20} color={s.BLUE} />
           </View>
           <View style={s.textCol}>
-            <Text style={s.label}>Emails</Text>
+            <Text style={s.label}>{t.homeHeader.emails}</Text>
             <Text style={s.count}>{emailsCount}</Text>
           </View>
         </View>
@@ -32,7 +34,7 @@ export const HomeHeader = ({
         {/* Bloc droit : Platforms */}
         <View style={[s.stat, s.statRight]}>
           <View style={[s.textCol, s.textColRight]}>
-            <Text style={s.label}>Platforms</Text>
+            <Text style={s.label}>{t.homeHeader.platforms}</Text>
             <Text style={s.count}>{platformsCount}</Text>
           </View>
           <View style={[s.bubble, s.bubbleGreen]}>

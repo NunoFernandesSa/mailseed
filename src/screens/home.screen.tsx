@@ -6,6 +6,7 @@ import { SectionHeader } from "@/components/shared/section-header";
 import { EmailRow } from "@/components/ui/email-row";
 import StatCard from "@/components/ui/stat-card";
 import { uniqueTags } from "@/helpers/uniqueTags";
+import { useAppData } from "@/hooks/useAppData";
 import { useDashboardStyles } from "@/hooks/useDashboardStyles";
 import useMailseedStore from "@/store/useMailseedStore";
 import { router } from "expo-router";
@@ -13,26 +14,26 @@ import { useMemo } from "react";
 import { Text, View } from "react-native";
 
 export const HomeScreen = () => {
-  const { emails, platforms } = useMailseedStore();
+  const { emails, platforms, getPlatformCountByEmail } = useMailseedStore();
   const s = useDashboardStyles();
+  const { t } = useAppData();
 
-  const platformCountByEmail = useMemo(() => {
-    const map = new Map<number, number>();
-    platforms.forEach((p) => {
-      map.set(p.emailId, (map.get(p.emailId) ?? 0) + 1);
-    });
-    return map;
-  }, [platforms]);
+  const platformCountByEmail = useMemo(
+    () => getPlatformCountByEmail(),
+    [platforms, getPlatformCountByEmail],
+  );
 
   const topRecentPlatforms = useMemo(
-    () => [...platforms].slice(0, 3),
-    [platforms],
+    () => [...platforms].slice(0, t.params.maxRecentPlatformsPreview),
+    [platforms, t.params.maxRecentPlatformsPreview],
   );
 
   const totalUniqueTags = useMemo(
     () =>
       uniqueTags(
-        platforms.map((p) => p.tags).filter((t): t is string => Boolean(t)),
+        platforms
+          .map((p) => p.tags)
+          .filter((tag): tag is string => Boolean(tag)),
       ),
     [platforms],
   );
@@ -45,7 +46,7 @@ export const HomeScreen = () => {
       <HomeHeader
         emailsCount={emails.length}
         platformsCount={platforms.length}
-        subtitle="Votre empreinte digitale numérique 💚"
+        subtitle={t.home.headerSubtitle}
       />
 
       {isEmpty ? (
@@ -56,14 +57,14 @@ export const HomeScreen = () => {
           <View style={s.statsRow}>
             <StatCard
               icon="time-outline"
-              label="Total platforms"
+              label={t.home.stats.totalPlatforms}
               value={platforms.length}
               variant="default"
             />
             <View style={{ width: 12 }} />
             <StatCard
               icon="pricetags-outline"
-              label="Tags uniques"
+              label={t.home.stats.uniqueTags}
               value={totalUniqueTags}
               variant="positive"
             />
@@ -71,9 +72,9 @@ export const HomeScreen = () => {
 
           {/* ─── 3. Your Emails ─── */}
           <SectionHeader
-            title="Your Emails"
-            subtitle="Sélectionnez une adresse pour voir ses plateformes"
-            seeAllLabel="Search"
+            title={t.home.sections.yourEmails.title}
+            subtitle={t.home.sections.yourEmails.subtitle}
+            seeAllLabel={t.common.search}
             onPressSeeAll={() => router.navigate("/(tabs)/search")}
           />
           <View style={s.cardGroup}>
@@ -87,15 +88,19 @@ export const HomeScreen = () => {
               />
             ))}
             {emails.length === 0 ? (
-              <Text style={s.softEmpty}>Aucun email enregistré</Text>
+              <Text style={s.softEmpty}>{t.home.empty.noEmail}</Text>
             ) : null}
           </View>
 
           {/* ─── 4. Recent platforms ─── */}
           <SectionHeader
-            title="Recent platforms"
-            subtitle="Dernières plateformes enregistrées"
-            seeAllLabel={platforms.length > 3 ? "Voir tout" : undefined}
+            title={t.home.sections.recentPlatforms.title}
+            subtitle={t.home.sections.recentPlatforms.subtitle}
+            seeAllLabel={
+              platforms.length > t.params.maxRecentPlatformsPreview
+                ? t.common.seeAll
+                : undefined
+            }
             onPressSeeAll={() => router.navigate("/(tabs)/search")}
           />
           <View style={s.cardGroup}>
@@ -110,7 +115,7 @@ export const HomeScreen = () => {
                 />
               ))
             ) : (
-              <Text style={s.softEmpty}>Aucune plateforme enregistrée</Text>
+              <Text style={s.softEmpty}>{t.home.empty.noPlatform}</Text>
             )}
           </View>
         </>
